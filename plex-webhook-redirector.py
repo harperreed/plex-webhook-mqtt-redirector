@@ -63,7 +63,7 @@ flask_debug = False
 # Plex Setup
 ##############################
 plex_config = config.ConfigSectionMap("PLEX")
-print plex_config
+
 
 filtered_players = [] if plex_config['trackedplayeruuids'] == "none" else plex_config['trackedplayeruuids'].split(',')
 
