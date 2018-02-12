@@ -4,7 +4,7 @@ import logging
 ##############################
 # Logging
 ##############################
-logger = logging.getLogger('plex_lifx_webhook.config_helper')
+logger = logging.getLogger('plex_webhook_redirector.config_helper')
 
 
 Config = ConfigParser.ConfigParser()
