@@ -10,20 +10,25 @@ import json
 import logging
 import hashlib
 import shutil
-import numpy
 import requests
 
 from flask import Flask, abort, request
 from random import shuffle
+
+
+print "o yea"
 
 import config_helper as config
 
 ##############################
 # Logging Setup
 ##############################
+
 if config.ConfigSectionMap("LOGGER")['logfile'] is None:
   logger.error("Please specify a path for the logfile.")
   sys.exit(1)
+
+
 
 logger = logging.getLogger('plex_webhook_redirector')
 logger.setLevel(logging.DEBUG)
@@ -38,7 +43,7 @@ file_handler.setFormatter(formatter)
 
 # Console Handler
 console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.INFO)
+console_handler.setLevel(logging.DEBUG)
 console_handler.setFormatter(formatter)
 
 logger.addHandler(file_handler)
@@ -49,7 +54,7 @@ logger.debug("Starting Plex Webhook Redirector:)")
 ##############################
 # Flask Setup
 ##############################
-flask_port = config.ConfigSectionMap("SERVER")['flaskport']
+flask_port = int(config.ConfigSectionMap("SERVER")['flaskport'])
 
 upload_folder = os.getcwd() + '/tmp'
 
