@@ -1,0 +1,15 @@
+[LOGGER]
+LogFile: plex_webhook_redirector.log
+
+[SERVER]
+FlaskPort: 8765
+
+[PLEX]
+TrackedPlayerUUIDs: f868bd73e2f99f3a39e0b65d5306142f
+LocalPlayersOnly: true
+
+[WEBHOOKS]
+MediaPlayWebhook: http://192.168.200.193:7070/v1/event/TRIGGER100
+MediaPauseWebhook: http://192.168.200.193:7070/v1/event/TRIGGER103
+MediaResumeWebhook: http://192.168.200.193:7070/v1/event/TRIGGER102
+MediaStopWebhook: http://192.168.200.193:7070/v1/event/TRIGGER101
