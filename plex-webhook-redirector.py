@@ -175,7 +175,7 @@ def inbound_request():
     r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediapausewebhook'])
     return 'ok'
 
-  if event == 'media.resume':
+  if event == 'media.play':
 
     # HANDLE PLAY OR RESUME
     logger.debug("Making request to " + config.ConfigSectionMap("WEBHOOKS")['mediaplaywebhook'])
