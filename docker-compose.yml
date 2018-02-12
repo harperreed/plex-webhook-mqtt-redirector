@@ -1,0 +1,13 @@
+version: '2'
+services:
+  plex-webhook-redirector:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: plex-webhook-redirector
+    restart: unless-stopped
+    ports:
+      - 8765:8765
+    volumes:
+      - ./config.ini:/app/config.ini
+      - ./plex_webhook_redirector.log:/app/plex_webhook_redirector.log
