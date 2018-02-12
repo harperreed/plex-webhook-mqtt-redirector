@@ -164,9 +164,6 @@ def inbound_request():
 
   
   if event == 'media.stop':
-    logger.debug("Removing Directory: " + thumb_folder)
-    shutil.rmtree(thumb_folder)
-
     # HANDLE STOP
     logger.debug("Making request to " + config.ConfigSectionMap("WEBHOOKS")['mediastopwebhook'])
     r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediastopwebhook'])
