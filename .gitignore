@@ -5,5 +5,8 @@ logs
 # Compiled Files
 *.pyc
 
+#config files
+config.ini
+
 # tmp Files
 tmp/*
