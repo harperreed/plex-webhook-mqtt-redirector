@@ -166,14 +166,14 @@ def inbound_request():
   
   if event == 'media.stop':
     # HANDLE STOP
-    logger.debug("Making request to " + config.ConfigSectionMap("WEBHOOKS")['mediastopwebhook'])
+    logger.debug("Sending 'stop' message to " + config.ConfigSectionMap("MQTT")['topic'])
     #r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediastopwebhook'])
     client.publish(topic,"Stop") #publish
     return 'ok'
 
   if event == 'media.pause':
     # HANDLE PAUSE
-    logger.debug("Making request to " + config.ConfigSectionMap("WEBHOOKS")['mediapausewebhook'])
+    logger.debug("Sending 'pause' message to " + config.ConfigSectionMap("MQTT")['topic'])
     #r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediapausewebhook'])
     client.publish(topic,"Pause") #publish
     return 'ok'
@@ -181,14 +181,14 @@ def inbound_request():
   if event == 'media.play':
 
     # HANDLE PLAY OR RESUME
-    logger.debug("Making request to " + config.ConfigSectionMap("WEBHOOKS")['mediaplaywebhook'])
+    logger.debug("Sending 'play' message to " + config.ConfigSectionMap("MQTT")['topic'])
     #r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediaplaywebhook'])
     client.publish(topic,"Play") #publish
     return 'ok'
 
   if event == 'media.resume':
     # HANDLE RESUKE
-    logger.debug("Making request to " + config.ConfigSectionMap("WEBHOOKS")['mediaresumewebhook'])
+    logger.debug("Sending 'resume' message to " + config.ConfigSectionMap("MQTT")['topic'])
     #r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediaresumewebhook'])
     client.publish(topic,"Resume") #publish
     return 'ok'
