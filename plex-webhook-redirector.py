@@ -93,7 +93,7 @@ def send_mqtt_message(topic, message):
   client = mqtt.Client("P1") #create new instance
   client.connect(broker) #connect to broker
   client.publish(topic,message) #publish
-  client..disconnect()
+  client.disconnect()
 
 ##############################
 # Server
