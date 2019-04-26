@@ -88,6 +88,13 @@ events = [
 # Helper Methods
 ##############################
 
+def send_mqtt_message(topic, message):
+  broker = config.ConfigSectionMap("MQTT")['broker']
+  client = mqtt.Client("P1") #create new instance
+  client.connect(broker) #connect to broker
+  client.publish(topic,message) #publish
+  client..disconnect()
+
 ##############################
 # Server
 ##############################
@@ -168,14 +175,14 @@ def inbound_request():
     # HANDLE STOP
     logger.debug("Sending 'stop' message to " + config.ConfigSectionMap("MQTT")['topic'])
     #r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediastopwebhook'])
-    client.publish(topic,"Stop") #publish
+    send_mqtt_message(topic,"Stop") #publish
     return 'ok'
 
   if event == 'media.pause':
     # HANDLE PAUSE
     logger.debug("Sending 'pause' message to " + config.ConfigSectionMap("MQTT")['topic'])
     #r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediapausewebhook'])
-    client.publish(topic,"Pause") #publish
+    send_mqtt_message(topic,"Pause") #publish
     return 'ok'
 
   if event == 'media.play':
@@ -183,20 +190,19 @@ def inbound_request():
     # HANDLE PLAY OR RESUME
     logger.debug("Sending 'play' message to " + config.ConfigSectionMap("MQTT")['topic'])
     #r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediaplaywebhook'])
-    client.publish(topic,"Play") #publish
+    send_mqtt_message(topic,"Play") #publish
     return 'ok'
 
   if event == 'media.resume':
     # HANDLE RESUKE
     logger.debug("Sending 'resume' message to " + config.ConfigSectionMap("MQTT")['topic'])
     #r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediaresumewebhook'])
-    client.publish(topic,"Resume") #publish
+    
+    send_mqtt_message(topic,"Resume") #publish
     return 'ok'
 
 if __name__ == "__main__":
 
-  broker = config.ConfigSectionMap("MQTT")['broker']
-  client = mqtt.Client("P1") #create new instance
-  client.connect(broker) #connect to broker
+  
   app.run(host='0.0.0.0', port=flask_port, debug=flask_debug)
 
