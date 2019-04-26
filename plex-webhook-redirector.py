@@ -13,6 +13,7 @@ import shutil
 import requests
 
 from flask import Flask, abort, request
+import paho.mqtt.client as mqtt
 from random import shuffle
 
 
@@ -161,33 +162,41 @@ def inbound_request():
       logger.error("Failed to check uuid - " + e.__str__())
 
 
-
+  topic = config.ConfigSectionMap("MQTT")['topic']
   
   if event == 'media.stop':
     # HANDLE STOP
     logger.debug("Making request to " + config.ConfigSectionMap("WEBHOOKS")['mediastopwebhook'])
-    r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediastopwebhook'])
+    #r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediastopwebhook'])
+    client.publish(topic,"Stop") #publish
     return 'ok'
 
   if event == 'media.pause':
     # HANDLE PAUSE
     logger.debug("Making request to " + config.ConfigSectionMap("WEBHOOKS")['mediapausewebhook'])
-    r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediapausewebhook'])
+    #r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediapausewebhook'])
+    client.publish(topic,"Pause") #publish
     return 'ok'
 
   if event == 'media.play':
 
     # HANDLE PLAY OR RESUME
     logger.debug("Making request to " + config.ConfigSectionMap("WEBHOOKS")['mediaplaywebhook'])
-    r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediaplaywebhook'])
+    #r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediaplaywebhook'])
+    client.publish(topic,"Play") #publish
     return 'ok'
 
   if event == 'media.resume':
     # HANDLE RESUKE
     logger.debug("Making request to " + config.ConfigSectionMap("WEBHOOKS")['mediaresumewebhook'])
-    r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediaresumewebhook'])
+    #r = requests.get(config.ConfigSectionMap("WEBHOOKS")['mediaresumewebhook'])
+    client.publish(topic,"Resume") #publish
     return 'ok'
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=flask_port, debug=flask_debug)
+
+  broker = config.ConfigSectionMap("MQTT")['broker']
+  client = mqtt.Client("P1") #create new instance
+  client.connect(broker) #connect to broker
+  app.run(host='0.0.0.0', port=flask_port, debug=flask_debug)
 
