@@ -1,76 +1,75 @@
-# plex-webhook-redirector 🚀
+# Plex Webhook MQTT Redirector 🎬🔊
 
-A webhook for Plex that enhances your media experience by altering the color of your LIFX lights to match the main colors of the poster art being played. This innovative integration promises to make your viewing experience more immersive and visually appealing! 🎉
+A lightweight and efficient webhook for Plex that sends MQTT messages based on media playback events. Enhance your smart home automation by integrating your Plex media server with MQTT-compatible devices and services!
 
-## 📚 Summary of the Project
+## 🌟 Features
 
-The **plex-webhook-redirector** integrates seamlessly with your Plex media server to control connected smart devices based on media playback events. Whether it's playing, pausing, or stopping content, the webhook sends messages to an MQTT broker to trigger compatible devices, like LIFX lights. This refactored version of the original script utilizes MQTT for improved communication and event management, enhancing both functionality and performance.
+-   Listens for Plex webhook events (play, pause, resume, stop)
+-   Filters events based on media type (movies and episodes)
+-   Supports local player filtering
+-   Sends corresponding MQTT messages to a specified broker and topic
+-   Easily deployable via Docker
+-   Configurable through environment variables
 
-## 🌟 How to Use
+## 🚀 Quick Start
 
-Follow these simple steps to get started:
+1. **Clone the repository:**
 
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/harperreed/plex-webhook-redirector.git
-   cd plex-webhook-redirector
-   ```
+    ```bash
+    git clone https://github.com/harperreed/plex-webhook-mqtt-redirector.git
+    cd plex-webhook-mqtt-redirector
+    ```
 
-2. **Configure Environment Variables**:
-   Ensure you set up your environment variables for the application (e.g., `MQTT_BROKER`, `MQTT_TOPIC`, and `FILTERED_PLAYERS` if necessary). Don't forget to restart the script when you make any configuration changes! 🔧
+2. **Set up environment variables:**
+   Create a `.env` file in the project root and add your configuration:
 
-3. **Install Dependencies**:
-   Use `requirements.txt` to install the necessary packages:
-   ```bash
-   pip install -r requirements.txt
-   ```
+    ```
+    MQTT_BROKER=your_mqtt_broker_address
+    MQTT_TOPIC=your_mqtt_topic
+    MQTT_PORT=1883
+    TRACKED_PLAYER_UUIDS=uuid1,uuid2,uuid3
+    LOCAL_PLAYERS_ONLY=true
+    FLASK_PORT=8765
+    LOG_FILE=/app/logs/plex_webhook_redirector.log
+    ```
 
-4. **Run the Application**:
-   You can either run it directly with Python:
-   ```bash
-   python plex-webhook-redirector.py
-   ```
-   OR, for Docker users, you can set it up using the provided `docker-compose.yml` file:
-   ```bash
-   docker-compose up --build
-   ```
+3. **Run with Docker Compose:**
 
-5. **Add Webhook to Plex**:
-   - Navigate to your Plex server settings and add the webhook URL:
-     ```
-     http://localhost:8765
-     ```
+    ```bash
+    docker-compose up --build
+    ```
 
-## ⚙️ Tech Info
+4. **Configure Plex Webhook:**
+   In your Plex server settings, add a new webhook with the URL:
+    ```
+    http://your_server_ip:8765
+    ```
 
-- **Requirements**:
-  - A Plex Pass and a server version that supports [Plex Webhooks](https://support.plex.tv/hc/en-us/articles/115002267687-Webhooks)
-  - Python 3.9 or higher (as Python 2.7 has been deprecated)
+## 🛠 Configuration
 
-- **Technologies Used**:
-  - **Python**: For implementing the webhook logic.
-  - **Flask**: Utilizing this micro web framework to handle HTTP requests.
-  - **MQTT**: For sending real-time messages to connected devices.
-  - **Docker**: For containerization to simplify deployment and dependency management.
+-   `MQTT_BROKER`: Address of your MQTT broker
+-   `MQTT_TOPIC`: MQTT topic to publish messages to
+-   `MQTT_PORT`: Port of your MQTT broker (default: 1883)
+-   `TRACKED_PLAYER_UUIDS`: Comma-separated list of Plex player UUIDs to track (optional)
+-   `LOCAL_PLAYERS_ONLY`: Set to "true" to only process events from local players
+-   `FLASK_PORT`: Port for the Flask application (default: 8765)
+-   `LOG_FILE`: Path to the log file
 
-- **Directory Structure**:
-  ```
-  plex-webhook-redirector/
-  ├── Dockerfile
-  ├── README.md
-  ├── docker-compose.yml
-  ├── plex-webhook-redirector.py
-  └── requirements.txt
-  ```
+## 📊 Logging
 
-- **File Descriptions**:
-  - `Dockerfile`: Instructions for building the Docker container.
-  - `docker-compose.yml`: Defines the service for easy deployment using Docker.
-  - `plex-webhook-redirector.py`: The primary script that processes Plex webhooks and triggers MQTT messages.
-  - `requirements.txt`: Lists all the required Python packages.
+Logs are written to the specified `LOG_FILE` and to the console. They include detailed information about received webhooks and MQTT message status.
 
----
+## 🤝 Contributing
 
-Feel free to contribute, start discussions, report issues, or request features! 🌈 
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-For any additional information or questions, you can reach out to me here on GitHub: [harperreed](https://github.com/harperreed). Happy coding! 💻✨
+## 📜 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 🙏 Acknowledgements
+
+-   Original concept by [Bailey Belvis](https://github.com/philosowaffle)
+-   Refactored and maintained by [Harper Reed](https://github.com/harperreed)
+
+For more information or to report issues, please visit the [GitHub repository](https://github.com/harperreed/plex-webhook-mqtt-redirector).
