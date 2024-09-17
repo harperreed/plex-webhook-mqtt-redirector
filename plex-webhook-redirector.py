@@ -59,16 +59,35 @@ EVENTS = ['media.play', 'media.pause', 'media.resume', 'media.stop']
 # MQTT Setup
 MQTT_BROKER = os.getenv('MQTT_BROKER')
 MQTT_TOPIC = os.getenv('MQTT_TOPIC')
+MQTT_PORT = int(os.getenv('MQTT_PORT', '1883'))
+MQTT_CLIENT_ID = os.getenv('MQTT_CLIENT_ID', 'plex_webhook_redirector')
+
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        logger.info("Connected to MQTT broker")
+    else:
+        logger.error(f"Failed to connect to MQTT broker with code: {rc}")
+
+def create_mqtt_client():
+    client = mqtt.Client(client_id=MQTT_CLIENT_ID, protocol=mqtt.MQTTv311)
+    client.on_connect = on_connect
+    return client
 
 def send_mqtt_message(topic: str, message: str) -> None:
     try:
-        client = mqtt.Client("P1")
-        client.connect(MQTT_BROKER)
-        client.publish(topic, message)
+        client = create_mqtt_client()
+        client.connect(MQTT_BROKER, MQTT_PORT, 60)
+        client.loop_start()
+        result = client.publish(topic, message)
+        status = result[0]
+        if status == 0:
+            logger.debug(f"MQTT message sent successfully: {message} to topic: {topic}")
+        else:
+            logger.error(f"Failed to send MQTT message. Error code: {status}")
+        client.loop_stop()
         client.disconnect()
-        logger.debug(f"MQTT message sent: {message} to topic: {topic}")
     except Exception as e:
-        logger.error(f"Failed to send MQTT message: {e}")
+        logger.error(f"Failed to send MQTT message: {str(e)}", exc_info=True)
 
 def format_webhook_log(webhook: Dict[Any, Any]) -> str:
     try:
@@ -96,7 +115,6 @@ def format_webhook_log(webhook: Dict[Any, Any]) -> str:
         return log_message
     except KeyError as e:
         return f"Error formatting webhook log: {str(e)}\nRaw webhook: {json.dumps(webhook, indent=2)}"
-
 
 @app.route("/", methods=['POST'])
 def inbound_request():
