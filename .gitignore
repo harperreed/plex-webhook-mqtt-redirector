@@ -10,3 +10,7 @@ config.ini
 
 # tmp Files
 tmp/*
+
+
+output.txt
+.env

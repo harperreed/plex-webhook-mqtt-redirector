@@ -1,10 +1,15 @@
-FROM python:2.7-slim
+FROM python:3.9-slim
 
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Make port 8765 available to the world outside this container
 EXPOSE 8765
 
-COPY . /app
-WORKDIR /app
-RUN pip install -r requirements.txt
-
-ENTRYPOINT ["python"]
-CMD ["plex-webhook-redirector.py"]
+# Run plex-webhook-redirector.py when the container launches
+CMD ["python", "plex-webhook-redirector.py"]

@@ -1,3 +1,4 @@
 flask
 requests
 paho-mqtt
+python-dotenv
