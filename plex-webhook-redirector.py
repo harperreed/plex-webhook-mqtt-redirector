@@ -100,6 +100,7 @@ def format_webhook_log(webhook: Dict[Any, Any]) -> str:
 
 @app.route("/", methods=['POST'])
 def inbound_request():
+    
     try:
         data = request.form
         webhook = json.loads(data['payload'])
@@ -110,20 +111,16 @@ def inbound_request():
     log_message = format_webhook_log(webhook)
     logger.info(log_message)
 
-    try:
-        event = webhook['event']
-        logger.info(f"Event: {event}")
-    except KeyError:
+    event = webhook.get('event')
+    if not event:
         logger.error("No event found in the json")
         return "No event found in the json", 400
 
     if event not in EVENTS:
         return 'ok'
 
-    try:
-        media_type = webhook['Metadata']['type']
-        logger.debug(f"Media Type: {media_type}")
-    except KeyError:
+    media_type = webhook.get('Metadata', {}).get('type')
+    if not media_type:
         logger.error("No media type found in the json")
         return "No media type found in the json", 400
 
