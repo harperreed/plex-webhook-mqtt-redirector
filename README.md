@@ -1,4 +1,4 @@
-# plex-webhook-redirector 🚀
+# pplex-webhook-mqtt-redirector 🚀
 
 A webhook for Plex that alters the color of your LIFX lights to match the main colors of the poster art being played. This can enhance your media experience, making it more immersive and visually appealing.
 
