@@ -70,6 +70,34 @@ def send_mqtt_message(topic: str, message: str) -> None:
     except Exception as e:
         logger.error(f"Failed to send MQTT message: {e}")
 
+def format_webhook_log(webhook: Dict[Any, Any]) -> str:
+    try:
+        user = webhook['Account']['title']
+        event = webhook['event'].split('.')[-1].capitalize()
+        device = webhook['Player']['title']
+        is_local = "Local" if webhook['Player']['local'] else "Remote"
+        
+        metadata = webhook['Metadata']
+        content_type = metadata['type'].capitalize()
+        
+        if content_type == 'Episode':
+            content = f"{metadata['grandparentTitle']} - S{metadata['parentIndex']:02d}E{metadata['index']:02d} - {metadata['title']}"
+        elif content_type == 'Movie':
+            content = f"{metadata['title']} ({metadata.get('year', 'N/A')})"
+        else:
+            content = metadata['title']
+        
+        log_message = (
+            f"Event: {event} | "
+            f"User: {user} | "
+            f"Content: {content} | "
+            f"Device: {device} ({is_local})"
+        )
+        return log_message
+    except KeyError as e:
+        return f"Error formatting webhook log: {str(e)}\nRaw webhook: {json.dumps(webhook, indent=2)}"
+
+
 @app.route("/", methods=['POST'])
 def inbound_request():
     try:
@@ -79,7 +107,8 @@ def inbound_request():
         logger.error("No payload found")
         abort(400)
 
-    logger.debug(webhook)
+    log_message = format_webhook_log(webhook)
+    logger.info(log_message)
 
     try:
         event = webhook['event']
