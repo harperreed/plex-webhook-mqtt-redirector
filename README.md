@@ -56,7 +56,7 @@ Follow these simple steps to get started:
 
 - **Directory Structure**:
   ```
-  plex-webhook-redirector/
+plex-webhook-mqtt-redirector/
   ├── Dockerfile
   ├── README.md
   ├── docker-compose.yml
